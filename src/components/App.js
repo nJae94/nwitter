@@ -10,7 +10,7 @@ function App() {
   
   console.log(authService.currentUser);
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(authService.currentUser);
 
   return (
     <>
