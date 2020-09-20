@@ -6,6 +6,7 @@ const Auth = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [newAccount, setNewAccount] = useState(true);
+    const [error, setError] = useState("");
 
     const authService = fbase.auth();
  
@@ -19,7 +20,7 @@ const Auth = () => {
         {
             setEmail(value);
         }
-        else{
+        else if(name==='password'){
             setPassword(value);
         }
 
@@ -28,14 +29,18 @@ const Auth = () => {
     const onSubmit = async(e) => {
 
         e.preventDefault();
-        let data;
+
         try{
+
+            let data;
 
             if(newAccount){
 
+                console.log(email,password);
+
                 data = await authService.createUserWithEmailAndPassword(
                      email, password
-                 )
+                 );
              }
              else
              {
@@ -48,10 +53,15 @@ const Auth = () => {
         
         catch(error)
         {
+        
             console.log(error);
+            setError(error.message);
         }
 
-    }
+    };
+
+    const toggleAccount = () => setNewAccount((prev) => !prev);
+
     return (
         <div>
             <form onSubmit={onSubmit}>
@@ -72,7 +82,11 @@ const Auth = () => {
                 onChange={onChange}
                 />
                 <input type="submit" value={newAccount ? "Create Account": "Log In"}/>
+                {error}
             </form>
+            <span onClick={toggleAccount}>
+                {newAccount ? "Sign In" : "Create Account"}
+            </span>
 
             <div>
                 <button>With Google</button>
