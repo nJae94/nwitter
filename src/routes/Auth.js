@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import fbase from '../fbase';
+import { authService, firebaseInstance } from "fbase";
+
 
 const Auth = () => {
 
@@ -7,8 +8,6 @@ const Auth = () => {
     const [password, setPassword] = useState("");
     const [newAccount, setNewAccount] = useState(true);
     const [error, setError] = useState("");
-
-    const authService = fbase.auth();
  
     const onChange = (e) => {
 
@@ -25,6 +24,17 @@ const Auth = () => {
         }
 
     }
+
+    const onSocialClick = async (event) => {
+
+          const provider = new firebaseInstance.auth.GoogleAuthProvider();
+
+          console.log(provider);
+
+          await authService.signInWithPopup(provider);
+
+    };
+
 
     const onSubmit = async(e) => {
 
@@ -89,7 +99,7 @@ const Auth = () => {
             </span>
 
             <div>
-                <button>With Google</button>
+                <button onClick={onSocialClick} name="google">With Google</button>
             </div>
         </div>
     )
