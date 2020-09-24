@@ -1,10 +1,30 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { dbService } from 'fbase';
 
 const Home = () => {
 
     const [nweet, setNweet] = useState("");
+
+    const [nweets, setNweets] = useState([]);
+
+    const getNweets = async () => {
+
+      const dbNweets = await dbService.collection("nweets").get();
+      dbNweets.forEach((document) => {
+        const nweetObject = {
+          ...document.data(),
+          id: document.id,
+        };
+        setNweets((prev) => [nweetObject, ...prev]);
+      });
+      
+    };
+
+    useEffect(() => {
+      getNweets();
+    }, []);
+
 
     const onSubmit = (event) => {
 
@@ -15,6 +35,8 @@ const Home = () => {
             createdAt:Date.now(),
             
         });
+        setNweet("");
+
     };
 
     const onChange = (event) => {
@@ -25,12 +47,18 @@ const Home = () => {
 
     }
 
+    console.log(nweets);
+
     return (
         <div>
             <form onSubmit={onSubmit}>
                 <input value={nweet} onChange={onChange} type="text" placeholder="쓸 말" maxLength={120} />
                 <input type="submit" value="Nweet" />
             </form>
+
+            <div>
+                {nweets.length >0 && nweets.map(n => <span key={n.id}>{n.nweet} </span>) }
+            </div>
         </div>
     )
 }
