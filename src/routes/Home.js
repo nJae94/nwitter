@@ -9,6 +9,8 @@ const Home = ({userObj}) => {
 
     const [nweets, setNweets] = useState([]);
 
+    const [file, setFile] = useState();
+
     // const getNweets = async () => {
 
     //   const dbNweets = await dbService.collection("nweets").get();
@@ -60,12 +62,51 @@ const Home = ({userObj}) => {
         setNweet(value);
 
     }
+    const onFileChange = (e) => {
+        const {
+            target: {
+                files
+            },
+        } = e;
+
+        const theFile = files[0];
+
+        const reader = new FileReader();
+
+        reader.onloadend = (finishedEvent) =>{
+
+            const {
+                currentTarget: {result},
+            } = finishedEvent;
+
+            setFile(result);
+        };
+
+        reader.readAsDataURL(theFile);
+
+        
+    };
+
+    const onClearPhoto = () => {
+        setFile(null);
+    }
 
     return (
         <div>
             <form onSubmit={onSubmit}>
                 <input value={nweet} onChange={onChange} type="text" placeholder="쓸 말" maxLength={120} />
+               
+               <input type="file" accept="image/*" onChange={onFileChange}/>
+               
                 <input type="submit" value="Nweet" />
+
+               { file && 
+               <div>
+                   <img src={file} width="50px" height="50px" />
+                   <button onClick={onClearPhoto}>Clear</button>
+               </div>
+               
+               }
             </form>
 
             <div>
