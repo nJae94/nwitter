@@ -1,7 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
-import { dbService } from 'fbase';
+import { dbService, storageService } from 'fbase';
 import Nweet from './Nweet';
+import {v4 as uuidv4} from 'uuid';
 
 const Home = ({userObj}) => {
 
@@ -41,16 +42,33 @@ const Home = ({userObj}) => {
     }, []);
 
 
-    const onSubmit = (event) => {
+    const onSubmit = async (event) => {
 
         event.preventDefault();
 
-        dbService.collection("nweets").add({
+        let fileUrl = "";
+
+        if(file != "")
+        {
+            const fileRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
+
+            const response =  await fileRef.putString(file,"data_url");
+            
+            fileUrl = await response.ref.getDownloadURL();
+        }
+
+
+        const fullNweet = {
+
             text: nweet,
             createdAt:Date.now(),
             creatorId: userObj.uid,
-            
-        });
+            fileUrl
+
+        }
+
+        await dbService.collection("nweets").add(fullNweet);
+
         setNweet("");
 
     };

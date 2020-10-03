@@ -1,4 +1,4 @@
-import { dbService } from 'fbase';
+import { dbService, storageService } from 'fbase';
 import React, { useEffect, useState } from 'react'
 
 function Nweet({nweetObj, isOwner}) {
@@ -14,6 +14,7 @@ function Nweet({nweetObj, isOwner}) {
     if(ok)
     {
        await dbService.doc(`nweets/${nweetObj.id}`).delete();
+       await storageService.refFromURL(nweetObj.fileUrl).delete();
     }
  };
 
@@ -51,7 +52,7 @@ function Nweet({nweetObj, isOwner}) {
             :
             <>
                 <h4>{nweetObj.text}</h4>
-
+                {nweetObj.fileUrl && <img src={nweetObj.fileUrl} width="50px" height="50px" />}
                 {isOwner && 
                 (
                     <>
