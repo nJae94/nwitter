@@ -1,11 +1,11 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-function Navigation() {
+function Navigation({userObj}) {
     return (
         <nav>
             <li><Link to="/">Home</Link></li>
-            <li><Link to="/profile">My Profile</Link></li>
+            <li><Link to="/profile">{userObj.displayName} Profile</Link></li>
         </nav>
     )
 }

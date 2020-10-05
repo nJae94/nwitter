@@ -10,7 +10,7 @@ const Home = ({userObj}) => {
 
     const [nweets, setNweets] = useState([]);
 
-    const [file, setFile] = useState();
+    const [file, setFile] = useState("");
 
     // const getNweets = async () => {
 
@@ -48,7 +48,7 @@ const Home = ({userObj}) => {
 
         let fileUrl = "";
 
-        if(file != "")
+        if(file !== "")
         {
             const fileRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
 
