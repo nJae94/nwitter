@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-function Profile({userObj}) {
+function Profile({refreshUser, userObj}) {
 
     const history = useHistory();
     const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
@@ -14,6 +14,9 @@ function Profile({userObj}) {
         authService.signOut();
 
         history.push("/");
+
+        refreshUser();
+        
     }
 
     const onChange = (e) => {
@@ -51,6 +54,8 @@ function Profile({userObj}) {
            await userObj.updateProfile({
                 displayName: newDisplayName,
             });
+
+            refreshUser();
         }
     }
 
