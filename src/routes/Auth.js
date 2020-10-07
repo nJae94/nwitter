@@ -15,9 +15,6 @@ const Auth = () => {
 
     };
 
-
-  
-
     return (
         <div>
             <AuthForm />

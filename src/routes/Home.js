@@ -6,11 +6,7 @@ import NweetFactory from 'components/NweetFactory';
 
 const Home = ({userObj}) => {
 
-    const [nweet, setNweet] = useState("");
-
     const [nweets, setNweets] = useState([]);
-
-    const [file, setFile] = useState("");
 
     // const getNweets = async () => {
 
